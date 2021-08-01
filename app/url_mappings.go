@@ -8,7 +8,7 @@ import (
 // mapUrls is used to mapping urls
 func mapUrls() {
 	router.GET("/AppStatus", healthCheck.AppStatus)
-	router.GET("/AdventurerStatus/:id", adventurer.Info)
+	router.GET("/AdventurerStatus/:id", adventurer.GetInfo)
 
-	router.POST("/AllAdventurerStatus")
+	router.POST("/AllAdventurerStatus", adventurer.GetAllInfo)
 }

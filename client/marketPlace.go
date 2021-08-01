@@ -3,7 +3,6 @@ package client
 import (
 	"encoding/json"
 	"github.com/Gunnsteinn/cryptoGuild/domain"
-	"log"
 	"net/http"
 )
 
@@ -18,7 +17,7 @@ func FetchClaimInfo(id string) (*domain.ClaimInfo, error) {
 	var cResp domain.ClaimInfo
 	//Decode the data
 	if err := json.NewDecoder(resp.Body).Decode(&cResp); err != nil {
-		log.Fatal("ooopsss! an error occurred, please try again")
+		return nil, err
 	}
 	//Invoke the text output function & return it with nil as the error value
 	return &cResp, nil

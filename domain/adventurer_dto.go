@@ -8,3 +8,13 @@ type Adventurer struct {
 	LastClaimedItemAt string `json:"last_claimed_item_at"`
 	ClaimedItemAt     string `json:"claimed_item_at"`
 }
+
+type ListOfAdventurer struct {
+	User string `json:"user"`
+	Data *Adventurer
+}
+
+type BodyRequestListOfAdventurer []struct {
+	User     string `json:"user"`
+	ClientID string `json:"client_id"`
+}

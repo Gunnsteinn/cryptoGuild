@@ -14,8 +14,23 @@ func GetAdventurerDetail(userID string) (*domain.Adventurer, error) {
 
 	lastClaimedAt := time.Unix(0, (result.LastClaimedItemAt)*int64(time.Second)).Format("2006-01-02 15:04:05")
 	ClaimedAt := time.Unix(0, (result.LastClaimedItemAt+1209600)*int64(time.Second)).Format("2006-01-02 15:04:05")
-
 	adv := domain.Adventurer{ClientID: result.ClientID, Total: result.Total, ClaimableTotal: result.ClaimableTotal, LastClaimedItemAt: lastClaimedAt, ClaimedItemAt: ClaimedAt}
 
 	return &adv, nil
+}
+
+func GetAllAdventurerDetail(listOfUser domain.BodyRequestListOfAdventurer) (*[]domain.ListOfAdventurer, error) {
+
+	var items []domain.ListOfAdventurer
+
+	for _, userData := range listOfUser {
+		result, err := GetAdventurerDetail(userData.ClientID)
+		if err != nil {
+			return nil, err
+		}
+		aad := domain.ListOfAdventurer{User: userData.User, Data: result}
+		items = append(items, aad)
+	}
+
+	return &items, nil
 }
