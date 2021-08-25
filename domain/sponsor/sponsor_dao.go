@@ -8,7 +8,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"os"
-	"time"
 )
 
 const (
@@ -33,12 +32,12 @@ var (
 
 // Get method implements Sponsor struct and get sponsor from the mongodb.
 func (sponsor *Sponsor) Get() *errors.RestErr {
-
+	log.Println("PASO 1")
 	ctx, client := connect()
 
 	collection := client.Database(databaseName).Collection(collectionName)
 	//bson.D{{"wallet_address", sponsor.WalletAddress}}
-
+	log.Println("PASO 2")
 	if getErr := collection.FindOne(ctx, bson.D{{}}).Decode(&sponsor); getErr != nil {
 		log.Println("PASO ERROR:" + getErr.Error())
 		return errors.NewInternalServerError(getErr.Error())
@@ -55,38 +54,22 @@ func connect() (context.Context, *mongo.Client) {
 	//	password,
 	//	host,
 	//)
-	log.Println("PASO 2")
+
 	// Set client options
-	//clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-	//log.Println("PASO 3")
-	//// Connect to MongoDB
-	//client, err := mongo.Connect(context.TODO(), clientOptions)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//log.Println("PASO 4")
-	//// Check the connection
-	//err = client.Ping(context.TODO(), nil)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
+	clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println(client)
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("PINGGGGGGGGGG")
-	err = client.Ping(ctx, nil)
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Check the connection
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx := context.TODO()
 	log.Println("Connected to MongoDB!")
 
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
