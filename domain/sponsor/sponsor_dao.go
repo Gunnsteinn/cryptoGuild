@@ -35,10 +35,10 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 	log.Println("PASO 1")
 	ctx, client := connect()
 
-	collection := client.Database(databaseName).Collection(collectionName)
+	collection := client.Database("GGCGdb").Collection("teamInfo")
 	//bson.D{{"wallet_address", sponsor.WalletAddress}}
 	log.Println("PASO 2")
-	if getErr := collection.FindOne(ctx, bson.D{{}}).Decode(&sponsor); getErr != nil {
+	if getErr := collection.FindOne(ctx, bson.D{}).Decode(&sponsor); getErr != nil {
 		log.Println("PASO ERROR:" + getErr.Error())
 		return errors.NewInternalServerError(getErr.Error())
 	}
