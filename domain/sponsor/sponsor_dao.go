@@ -2,6 +2,7 @@ package sponsor
 
 import (
 	"context"
+	"fmt"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -34,6 +35,12 @@ var (
 func (sponsor *Sponsor) Get() *errors.RestErr {
 	log.Println("PASO 1")
 	ctx, client := connect()
+
+	databases, err := client.ListDatabaseNames(ctx, bson.M{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(databases)
 
 	collection := client.Database(databaseName).Collection(collectionName)
 	//bson.D{{"wallet_address", sponsor.WalletAddress}}
