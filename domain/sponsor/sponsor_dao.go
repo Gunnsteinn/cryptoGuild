@@ -33,9 +33,9 @@ var (
 
 // Get method implements Sponsor struct and get sponsor from the mongodb.
 func (sponsor *Sponsor) Get() *errors.RestErr {
-	log.Println("PASO 1")
+
 	ctx, client := connect()
-	log.Println("PASO 6")
+
 	collection := client.Database(databaseName).Collection(collectionName)
 	//bson.D{{"wallet_address", sponsor.WalletAddress}}
 
@@ -75,9 +75,14 @@ func connect() (context.Context, *mongo.Client) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("PASO 3")
+
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("PINGGGGGGGGGG")
+	err = client.Ping(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
