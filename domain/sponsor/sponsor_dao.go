@@ -36,14 +36,9 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 	log.Println("PASO 1")
 	ctx, client := connect()
 
-	databases, err := client.ListDatabaseNames(ctx, bson.M{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(databases)
-
 	collection := client.Database(databaseName).Collection(collectionName)
 	//bson.D{{"wallet_address", sponsor.WalletAddress}}
+	log.Println("PASO 2")
 	if getErr := collection.FindOne(ctx, bson.D{{}}).Decode(&sponsor); getErr != nil {
 		log.Println("PASO ERROR:" + getErr.Error())
 		return errors.NewInternalServerError(getErr.Error())
@@ -61,13 +56,30 @@ func connect() (context.Context, *mongo.Client) {
 	//	host,
 	//)
 
-	ctx := context.Background()
-	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	// Set client options
+	clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Check the connection
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx := context.Background()
+	fmt.Println("Connected to MongoDB!")
+
+	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
+	//client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	//
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	return ctx, client
 }
 
