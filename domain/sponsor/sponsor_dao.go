@@ -32,6 +32,7 @@ var (
 
 // Get method implements Sponsor struct and get sponsor from the mongodb.
 func (sponsor *Sponsor) Get() *errors.RestErr {
+	log.Println("PASO 1")
 	ctx, client := connect()
 
 	collection := client.Database(databaseName).Collection(collectionName)
@@ -50,12 +51,16 @@ func connect() (context.Context, *mongo.Client) {
 	//	host,
 	//)
 
+	log.Println("PASO 2")
 	ctx := context.Background()
+	log.Println("PASO 3")
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	log.Println("PASO 4")
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("PASO 5")
 	return ctx, client
 }
 
