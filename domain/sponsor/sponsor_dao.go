@@ -36,9 +36,9 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 	ctx, client := connect()
 
 	collection := client.Database(databaseName).Collection(collectionName)
-	log.Println("PASO 6")
-	if getErr := collection.FindOne(ctx, bson.D{{"wallet_address", sponsor.WalletAddress}}).Decode(&sponsor); getErr != nil {
-		log.Println("PASO ERROR: getErr.Error(")
+	//bson.D{{"wallet_address", sponsor.WalletAddress}}
+	if getErr := collection.FindOne(ctx, bson.D{{}}).Decode(&sponsor); getErr != nil {
+		log.Println("PASO ERROR:" + getErr.Error())
 		return errors.NewInternalServerError(getErr.Error())
 	}
 	log.Println("PASO 7")
@@ -54,16 +54,13 @@ func connect() (context.Context, *mongo.Client) {
 	//	host,
 	//)
 
-	log.Println("PASO 2")
 	ctx := context.Background()
-	log.Println("PASO 3")
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
-	log.Println("PASO 4")
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("PASO 5")
 	return ctx, client
 }
 
