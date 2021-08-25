@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"os"
+	"time"
 )
 
 const (
@@ -56,21 +57,31 @@ func connect() (context.Context, *mongo.Client) {
 	//)
 	log.Println("PASO 2")
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+	//clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+	//log.Println("PASO 3")
+	//// Connect to MongoDB
+	//client, err := mongo.Connect(context.TODO(), clientOptions)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+	//log.Println("PASO 4")
+	//// Check the connection
+	//err = client.Ping(context.TODO(), nil)
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
+
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	if err != nil {
+		log.Fatal(err)
+	}
 	log.Println("PASO 3")
-	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("PASO 4")
-	// Check the connection
-	err = client.Ping(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("PASO 5")
-	ctx := context.TODO()
+
 	log.Println("Connected to MongoDB!")
 
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
