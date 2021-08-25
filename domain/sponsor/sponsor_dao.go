@@ -2,7 +2,6 @@ package sponsor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -61,7 +60,6 @@ func connect() (context.Context, *mongo.Client) {
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -71,8 +69,8 @@ func connect() (context.Context, *mongo.Client) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	ctx := context.Background()
-	fmt.Println("Connected to MongoDB!")
+	ctx := context.TODO()
+	log.Println("Connected to MongoDB!")
 
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
