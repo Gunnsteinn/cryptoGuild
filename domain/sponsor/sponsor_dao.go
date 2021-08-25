@@ -51,7 +51,6 @@ func connect() (context.Context, *mongo.Client) {
 	//)
 
 	ctx := context.Background()
-	//client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
 	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
 	if err != nil {
