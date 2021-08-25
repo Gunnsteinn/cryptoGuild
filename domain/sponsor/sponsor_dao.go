@@ -2,6 +2,7 @@ package sponsor
 
 import (
 	"context"
+	"fmt"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -35,7 +36,7 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 	log.Println("PASO 1")
 	ctx, client := connect()
 
-	collection := client.Database("GGCGdb").Collection("teamInfo")
+	collection := client.Database(databaseName).Collection(collectionName)
 	//bson.D{{"wallet_address", sponsor.WalletAddress}}
 	log.Println("PASO 2")
 	if getErr := collection.FindOne(ctx, bson.D{}).Decode(&sponsor); getErr != nil {
@@ -49,15 +50,16 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 }
 
 func connect() (context.Context, *mongo.Client) {
-	//dataSourceName := fmt.Sprintf("mongodb+srv://%s:%s@%s?retryWrites=true&w=majority",
-	//	databaseName,
-	//	password,
-	//	host,
-	//)
+	dataSourceName := fmt.Sprintf("mongodb+srv://%s:%s@%s/%s?retryWrites=true&w=majority",
+		databaseName,
+		password,
+		host,
+		databaseName,
+	)
 
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/GGCGdb?retryWrites=true&w=majority")
-
+	//clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/GGCGdb?retryWrites=true&w=majority")
+	clientOptions := options.Client().ApplyURI(dataSourceName)
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
