@@ -56,7 +56,7 @@ func connect() (context.Context, *mongo.Client) {
 	//)
 
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+	clientOptions := options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/GGCGdb?retryWrites=true&w=majority")
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)
