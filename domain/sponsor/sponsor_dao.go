@@ -2,7 +2,6 @@ package sponsor
 
 import (
 	"context"
-	"fmt"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -45,14 +44,15 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 }
 
 func connect() (context.Context, *mongo.Client) {
-	dataSourceName := fmt.Sprintf("mongodb+srv://%s:%s@%s?retryWrites=true&w=majority",
-		databaseName,
-		password,
-		host,
-	)
+	//dataSourceName := fmt.Sprintf("mongodb+srv://%s:%s@%s?retryWrites=true&w=majority",
+	//	databaseName,
+	//	password,
+	//	host,
+	//)
 
 	ctx := context.Background()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://GGCGdb:S%40yley23@cluster0.6hrfc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
+	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(dataSourceName))
 	if err != nil {
 		log.Fatal(err)
 	}
