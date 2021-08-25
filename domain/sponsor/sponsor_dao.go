@@ -36,11 +36,14 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 	ctx, client := connect()
 
 	collection := client.Database(databaseName).Collection(collectionName)
+	log.Println("PASO 6")
 	if getErr := collection.FindOne(ctx, bson.D{{"wallet_address", sponsor.WalletAddress}}).Decode(&sponsor); getErr != nil {
+		log.Println("PASO ERROR: getErr.Error(")
 		return errors.NewInternalServerError(getErr.Error())
 	}
+	log.Println("PASO 7")
 	disconnect(ctx, client)
-
+	log.Println("PASO 8")
 	return nil
 }
 
