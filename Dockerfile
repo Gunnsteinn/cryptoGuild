@@ -22,4 +22,6 @@ RUN go build -o main .
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./main"]
+COPY ./config.sh /
+RUN chmod +x /config.sh
+ENTRYPOINT ["/config.sh"]
