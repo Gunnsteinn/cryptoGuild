@@ -75,14 +75,14 @@ func connect() (context.Context, *mongo.Client) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	log.Println(client)
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println("PINGGGGGGGGGG")
-	err = client.Ping(context.TODO(), nil)
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
