@@ -8,5 +8,8 @@ var router = gin.Default()
 
 func StartApplication() {
 	mapUrls()
-	router.Run()
+	err := router.Run()
+	if err != nil {
+		return
+	}
 }

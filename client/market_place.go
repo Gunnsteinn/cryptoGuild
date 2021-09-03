@@ -3,6 +3,8 @@ package client
 import (
 	"encoding/json"
 	"github.com/Gunnsteinn/cryptoGuild/domain"
+	"io"
+	"log"
 	"net/http"
 )
 
@@ -12,7 +14,12 @@ func FetchClaimInfo(id string) (*domain.ClaimInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(resp.Body)
 
 	var cResp domain.ClaimInfo
 	//Decode the data

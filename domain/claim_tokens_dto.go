@@ -1,6 +1,6 @@
 package domain
 
-// ClaimInfo (Marketplace axieinfinity info) response is exported, it models the data we receive.
+// ClaimInfo (Marketplace Axie infinity info) response is exported, it models the data we receive.
 type ClaimInfo struct {
 	Success           bool   `json:"success"`
 	ClientID          string `json:"client_id"`
