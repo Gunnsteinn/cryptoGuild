@@ -21,5 +21,5 @@ func CronJobStop(c *gin.Context) {
 		c.JSON(err.Status, err)
 		return
 	}
-	c.JSON(http.StatusOK, map[string]string{"status": "Run"})
+	c.JSON(http.StatusOK, map[string]string{"status": "Stop"})
 }

@@ -12,10 +12,11 @@ var job = cron.New()
 func StartTask() *errors.RestErr {
 	log.Println("Create new cron")
 	//cron := cron.New()
-	_, err := job.AddFunc("*/1 * * * *", func() {
+	_, err := job.AddFunc("*/30 * * * *", func() {
 		if errGetAndUpdate := getAndUpdate(); errGetAndUpdate != nil {
 			log.Println(errGetAndUpdate)
 		}
+		log.Println("Cron executed successfully")
 	})
 	if err != nil {
 		// Stop the scheduler (does not stop any jobs already running).
@@ -36,7 +37,7 @@ func StopTask() *errors.RestErr {
 	job.Stop()
 
 	// Start cron with one scheduled job
-	log.Println("Start cron")
+	log.Println("Stop cron")
 
 	return nil
 }
