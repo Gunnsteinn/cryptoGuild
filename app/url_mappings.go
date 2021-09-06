@@ -23,4 +23,5 @@ func mapUrls() {
 	//router.GET("/internal/sponsors/search", sponsors.Search)
 
 	router.GET("/Cronjob", scheduling.CronJobStart)
+	router.GET("/Cronjob", scheduling.CronJobStop)
 }

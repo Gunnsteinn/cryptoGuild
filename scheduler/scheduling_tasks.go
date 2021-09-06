@@ -7,23 +7,36 @@ import (
 	"log"
 )
 
-func Pepe() *errors.RestErr {
+var job = cron.New()
+
+func StartTask() *errors.RestErr {
 	log.Println("Create new cron")
-	cron := cron.New()
-	_, err := cron.AddFunc("*/1 * * * *", func() {
+	//cron := cron.New()
+	_, err := job.AddFunc("*/1 * * * *", func() {
 		if errGetAndUpdate := getAndUpdate(); errGetAndUpdate != nil {
 			log.Println(errGetAndUpdate)
 		}
 	})
 	if err != nil {
 		// Stop the scheduler (does not stop any jobs already running).
-		cron.Stop()
+		job.Stop()
 		return errors.NewInternalServerError(err.Error())
 	}
 
 	// Start cron with one scheduled job
 	log.Println("Start cron")
-	cron.Start()
+	job.Start()
+
+	return nil
+}
+
+func StopTask() *errors.RestErr {
+
+	// Stop the scheduler (does not stop any jobs already running).
+	job.Stop()
+
+	// Start cron with one scheduled job
+	log.Println("Start cron")
 
 	return nil
 }
