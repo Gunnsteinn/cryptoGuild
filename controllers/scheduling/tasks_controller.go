@@ -7,7 +7,16 @@ import (
 )
 
 func CronJobStart(c *gin.Context) {
-	err := scheduler.Pepe()
+	err := scheduler.StartTask()
+	if err != nil {
+		c.JSON(err.Status, err)
+		return
+	}
+	c.JSON(http.StatusOK, map[string]string{"status": "Run"})
+}
+
+func CronJobStop(c *gin.Context) {
+	err := scheduler.StopTask()
 	if err != nil {
 		c.JSON(err.Status, err)
 		return
