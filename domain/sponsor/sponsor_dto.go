@@ -12,9 +12,9 @@ type Sponsor struct {
 	Email         string `bson:"email,omitempty" json:"email,omitempty"`
 	WalletAddress string `bson:"wallet_address,omitempty" json:"wallet_address,omitempty"`
 	Teams         []struct {
-		TeamName      string `bson:"team_name,omitempty" json:"team_name,omitempty"`
-		WalletAddress string `bson:"wallet_address,omitempty" json:"wallet_address,omitempty"`
-		PoolPercent   int    `bson:"pool_percent,omitempty" json:"pool_percent,omitempty"`
+		TeamName      string  `bson:"team_name,omitempty" json:"team_name,omitempty"`
+		WalletAddress string  `bson:"wallet_address,omitempty" json:"wallet_address,omitempty"`
+		PoolPercent   float64 `bson:"pool_percent,omitempty" json:"pool_percent,omitempty"`
 		Adventurer    struct {
 			Name              string  `bson:"name,omitempty" json:"name,omitempty"`
 			LastName          string  `bson:"last_name,omitempty" json:"last_name,omitempty"`

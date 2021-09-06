@@ -61,11 +61,19 @@ func (sponsor *Sponsor) GetAll() ([]Sponsor, *errors.RestErr) {
 		return nil, errors.NewInternalServerError(getErr.Error())
 	}
 
-	defer cursor.Close(ctx)
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(cursor, ctx)
 	results := make([]Sponsor, 0)
 	for cursor.Next(ctx) {
 		var result Sponsor
-		cursor.Decode(&result)
+		err := cursor.Decode(&result)
+		if err != nil {
+			return nil, errors.NewInternalServerError(err.Error())
+		}
 		results = append(results, result)
 	}
 
