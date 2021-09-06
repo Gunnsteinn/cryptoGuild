@@ -22,6 +22,6 @@ func mapUrls() {
 	router.DELETE("/sponsors/:wallet_id", sponsors.Delete)
 	//router.GET("/internal/sponsors/search", sponsors.Search)
 
-	router.GET("/Cronjob", scheduling.CronJobStart)
-	router.GET("/Cronjob", scheduling.CronJobStop)
+	router.GET("/CronJobStart", scheduling.CronJobStart)
+	router.GET("/CronJobStop", scheduling.CronJobStop)
 }
