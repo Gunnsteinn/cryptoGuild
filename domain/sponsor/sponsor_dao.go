@@ -44,7 +44,7 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 
 	collection := client.Database(databaseName).Collection(collectionName)
 	if getErr := collection.FindOne(ctx, bson.D{{"wallet_address", sponsor.WalletAddress}}).Decode(&sponsor); getErr != nil {
-		return errors.NewInternalServerError(getErr.Error())
+		return errors.NewBadRequestError(getErr.Error())
 	}
 
 	disconnect(ctx, client)
