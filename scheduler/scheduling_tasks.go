@@ -12,7 +12,7 @@ var job = cron.New()
 func StartTask() *errors.RestErr {
 	log.Println("Create new cron")
 	//cron := cron.New()
-	_, err := job.AddFunc("*/15 * * * *", func() {
+	_, err := job.AddFunc("*/5 * * * *", func() {
 		if errGetAndUpdate := getAndUpdate(); errGetAndUpdate != nil {
 			log.Println(errGetAndUpdate)
 		}
