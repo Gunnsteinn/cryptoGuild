@@ -51,6 +51,19 @@ func (sponsor *Sponsor) Get() *errors.RestErr {
 	return nil
 }
 
+// GetByQuery method implements Sponsor struct and get sponsor from the mongodb.
+func (sponsor *Sponsor) GetByQuery(filterKey string, filterValue string) *errors.RestErr {
+	ctx, client := connect()
+
+	collection := client.Database(databaseName).Collection(collectionName)
+	if getErr := collection.FindOne(ctx, bson.D{{filterKey, filterValue}}).Decode(&sponsor); getErr != nil {
+		return errors.NewBadRequestError(getErr.Error())
+	}
+
+	disconnect(ctx, client)
+	return nil
+}
+
 // GetAll method implements Sponsor struct and get all sponsors from the mongodb.
 func (sponsor *Sponsor) GetAll() ([]Sponsor, *errors.RestErr) {
 	ctx, client := connect()

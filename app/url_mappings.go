@@ -14,13 +14,12 @@ func mapUrls() {
 	router.GET("/AdventurerStatus/:id", adventurer.GetInfo)
 	router.POST("/AllAdventurerStatus", adventurer.GetAllInfo)
 
-	router.GET("/sponsors/:wallet_id", sponsors.GetBy)
+	router.GET("/sponsors/:wallet_id", sponsors.GetByWalletId)
+	router.GET("/sponsors/filterBy/:nick_name", sponsors.GetByQuery)
 	router.GET("/sponsors", sponsors.GetAll)
 	router.POST("/sponsor", sponsors.Create)
 	router.PUT("/sponsors/:sponsors_id", sponsors.Update)
-	//router.PATCH("/sponsors/:sponsors_id", sponsors.Update)
 	router.DELETE("/sponsors/:wallet_id", sponsors.Delete)
-	//router.GET("/internal/sponsors/search", sponsors.Search)
 
 	router.GET("/CronJobStart", scheduling.CronJobStart)
 	router.GET("/CronJobStop", scheduling.CronJobStop)
