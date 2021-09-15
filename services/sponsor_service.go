@@ -14,6 +14,7 @@ type sponsorService struct {
 
 type sponsorsServiceInterface interface {
 	GetSponsor(string) (*sponsor.Sponsor, *errors.RestErr)
+	GetSponsorByQuery(string, string) (*sponsor.Sponsor, *errors.RestErr)
 	GetAllSponsor() (sponsor.Sponsors, *errors.RestErr)
 	CreateSponsor(sponsor.Sponsor) (*sponsor.Sponsor, *errors.RestErr)
 	UpdateSponsor(sponsor.Sponsor) (*sponsor.Sponsor, *errors.RestErr)
@@ -24,6 +25,15 @@ type sponsorsServiceInterface interface {
 func (s *sponsorService) GetSponsor(sponsorWallet string) (*sponsor.Sponsor, *errors.RestErr) {
 	result := &sponsor.Sponsor{WalletAddress: sponsorWallet}
 	if err := result.Get(); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// GetSponsorByQuery is the business logic to get user from the db.
+func (s *sponsorService) GetSponsorByQuery(filterKey string, filterValue string) (*sponsor.Sponsor, *errors.RestErr) {
+	result := &sponsor.Sponsor{}
+	if err := result.GetByQuery(filterKey, filterValue); err != nil {
 		return nil, err
 	}
 	return result, nil
