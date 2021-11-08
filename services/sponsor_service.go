@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/Gunnsteinn/cryptoGuild/domain/common"
 	"github.com/Gunnsteinn/cryptoGuild/domain/sponsor"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
 )
@@ -14,7 +15,8 @@ type sponsorService struct {
 
 type sponsorsServiceInterface interface {
 	GetSponsor(string) (*sponsor.Sponsor, *errors.RestErr)
-	GetSponsorByQuery(string, string) (*sponsor.Sponsor, *errors.RestErr)
+	GetSponsorByNickName(string, string) (*sponsor.Sponsor, *errors.RestErr)
+	GetSponsorByQuery(common.QueryFind) (sponsor.Sponsors, *errors.RestErr)
 	GetAllSponsor() (sponsor.Sponsors, *errors.RestErr)
 	CreateSponsor(sponsor.Sponsor) (*sponsor.Sponsor, *errors.RestErr)
 	UpdateSponsor(sponsor.Sponsor) (*sponsor.Sponsor, *errors.RestErr)
@@ -30,13 +32,19 @@ func (s *sponsorService) GetSponsor(sponsorWallet string) (*sponsor.Sponsor, *er
 	return result, nil
 }
 
-// GetSponsorByQuery is the business logic to get user from the db.
-func (s *sponsorService) GetSponsorByQuery(filterKey string, filterValue string) (*sponsor.Sponsor, *errors.RestErr) {
+// GetSponsorByNickName is the business logic to get user from the db.
+func (s *sponsorService) GetSponsorByNickName(filterKey string, filterValue string) (*sponsor.Sponsor, *errors.RestErr) {
 	result := &sponsor.Sponsor{}
 	if err := result.GetByQuery(filterKey, filterValue); err != nil {
 		return nil, err
 	}
 	return result, nil
+}
+
+// GetSponsorByQuery is the business logic to get user from the db.
+func (s *sponsorService) GetSponsorByQuery(filter common.QueryFind) (sponsor.Sponsors, *errors.RestErr) {
+	result := &sponsor.Sponsor{}
+	return result.GetByQueryFilter(filter.QueryFilters, filter.ProjectionFilter)
 }
 
 // GetAllSponsor is the business logic to get all user from the db.
