@@ -2,6 +2,7 @@ package sponsors
 
 import (
 	"encoding/hex"
+	"github.com/Gunnsteinn/cryptoGuild/domain/common"
 	"github.com/Gunnsteinn/cryptoGuild/domain/sponsor"
 	"github.com/Gunnsteinn/cryptoGuild/services"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
@@ -27,8 +28,8 @@ func GetByWalletId(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// GetByQuery get an existing user.
-func GetByQuery(c *gin.Context) {
+// GetByNickName get an existing user.
+func GetByNickName(c *gin.Context) {
 	filterValue, idErr := validateUriQueryStrings(c.Query("filter"))
 	if idErr != nil {
 		c.JSON(idErr.Status, idErr)
@@ -41,7 +42,24 @@ func GetByQuery(c *gin.Context) {
 		return
 	}
 
-	user, getErr := services.SponsorsService.GetSponsorByQuery(filterKey, filterValue)
+	user, getErr := services.SponsorsService.GetSponsorByNickName(filterKey, filterValue)
+	if getErr != nil {
+		c.JSON(getErr.Status, getErr)
+		return
+	}
+	c.JSON(http.StatusOK, user)
+}
+
+// GetByQuery get an existing user.
+func GetByQuery(c *gin.Context) {
+	var filter common.QueryFind
+	if err := c.ShouldBindJSON(&filter); err != nil {
+		restErr := errors.NewBadRequestError("invalid json body.")
+		c.JSON(restErr.Status, restErr)
+		return
+	}
+
+	user, getErr := services.SponsorsService.GetSponsorByQuery(filter)
 	if getErr != nil {
 		c.JSON(getErr.Status, getErr)
 		return

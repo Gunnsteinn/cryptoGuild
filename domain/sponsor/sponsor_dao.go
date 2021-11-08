@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Gunnsteinn/cryptoGuild/utils/errors"
+	"github.com/Gunnsteinn/cryptoGuild/utils/parser"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -62,6 +63,46 @@ func (sponsor *Sponsor) GetByQuery(filterKey string, filterValue string) *errors
 
 	disconnect(ctx, client)
 	return nil
+}
+
+// GetByQueryFilter method implements Sponsor struct and get special sponsor filter from the mongodb.
+func (sponsor *Sponsor) GetByQueryFilter(queryFilters string, projectionFilters string) ([]Sponsor, *errors.RestErr) {
+	ctx, client := connect()
+	collection := client.Database(databaseName).Collection(collectionName)
+
+	queryFilter, errStringToBson := parser.StringToBson(queryFilters)
+	if errStringToBson != nil {
+		return nil, errors.NewInternalServerError(errStringToBson.Error)
+	}
+
+	projectionFilter, errStringToBson1 := parser.StringToBson(projectionFilters)
+	if errStringToBson1 != nil {
+		return nil, errors.NewInternalServerError(errStringToBson1.Error)
+	}
+
+	cursor, getErr := collection.Find(ctx, queryFilter, options.Find().SetProjection(projectionFilter))
+	if getErr != nil {
+		return nil, errors.NewInternalServerError(getErr.Error())
+	}
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}(cursor, ctx)
+
+	results := make([]Sponsor, 0)
+	for cursor.Next(ctx) {
+		var result Sponsor
+		err := cursor.Decode(&result)
+		if err != nil {
+			return nil, errors.NewInternalServerError(err.Error())
+		}
+		results = append(results, result)
+	}
+
+	disconnect(ctx, client)
+	return results, nil
 }
 
 // GetAll method implements Sponsor struct and get all sponsors from the mongodb.

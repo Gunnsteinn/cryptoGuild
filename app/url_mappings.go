@@ -15,8 +15,9 @@ func mapUrls() {
 	router.POST("/AllAdventurerStatus", adventurer.GetAllInfo)
 
 	router.GET("/sponsors/:wallet_id", sponsors.GetByWalletId)
-	router.GET("/sponsors/filterBy/:nick_name", sponsors.GetByQuery)
+	router.GET("/sponsors/filterBy/:nick_name", sponsors.GetByNickName)
 	router.GET("/sponsors", sponsors.GetAll)
+	router.POST("/sponsors/filterByQuery", sponsors.GetByQuery)
 	router.POST("/sponsor", sponsors.Create)
 	router.PUT("/sponsors/:sponsors_id", sponsors.Update)
 	router.DELETE("/sponsors/:wallet_id", sponsors.Delete)
