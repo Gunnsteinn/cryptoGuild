@@ -17,7 +17,7 @@ func GetAdventurerDetail(userID string) (*domain.Adventurer, error) {
 	ClaimedAt := time.Unix(0, (result.LastClaimedItemAt+1209600)*int64(time.Second)).Format(time.RFC3339)
 	days, performance := performanceCalculator(lastClaimedAt, result.Total)
 
-	adv := domain.Adventurer{ClientID: result.ClientID, Total: result.Total, Performance: performance, ClaimableTotal: result.ClaimableTotal, LastClaimedItemAt: lastClaimedAt, PlayedDays: days, ClaimedItemAt: ClaimedAt}
+	adv := domain.Adventurer{ClientID: result.ClientID, Total: result.Total - result.ClaimableTotal, Performance: performance, ClaimableTotal: result.ClaimableTotal, LastClaimedItemAt: lastClaimedAt, PlayedDays: days, ClaimedItemAt: ClaimedAt}
 
 	return &adv, nil
 }
